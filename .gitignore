@@ -1,0 +1,12 @@
+/*/Application/obj
+/*/Domain/obj
+/*/EShop/obj
+/*/Infrastructure/obj
+/*/Application/bin
+/*/Domain/bin
+/*/EShop/bin
+/*/Infrastructure/bin
+/*/VerticalEShop/obj
+/*/VerticalEShop/bin
+.idea
+*.DotSettings.user
