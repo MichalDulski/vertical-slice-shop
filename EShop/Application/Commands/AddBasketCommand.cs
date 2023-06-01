@@ -1,5 +1,5 @@
-﻿using Application.DTO;
-using Application.Repositories;
+﻿using Application.Contracts;
+using Application.DTO;
 using Domain.Entities;
 using DotNext;
 using Mediator;

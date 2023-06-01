@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace API.Features.Baskets;
 
 [ApiController]
-[Route("[controller]")]
+[Route("baskets")]
 public class AddBasketsController : ControllerBase
 {
     private readonly IMediator _mediator;
@@ -20,7 +20,8 @@ public class AddBasketsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<Results<ProblemHttpResult, ValidationProblem,  Ok<BasketAdded>>> Add([FromBody] AddBasketCommand command)
+    public async Task<Results<ProblemHttpResult, ValidationProblem, Ok<BasketAdded>>> Add(
+        [FromBody] AddBasketCommand command)
     {
         try
         {
@@ -40,6 +41,12 @@ public class AddBasketsController : ControllerBase
         }
     }
 }
+
+public record struct AddBasketCommand(List<AddBasketProduct> Products) : IRequest<Result<BasketAdded, ErrorCodes>>;
+
+public record struct AddBasketProduct(string Name, int Quantity, decimal CostPerItem);
+
+public record struct BasketAdded(Guid BasketId, decimal Total);
 
 public class AddBasketValidator : IPipelineBehavior<AddBasketCommand, Result<BasketAdded, ErrorCodes>>
 {
@@ -71,25 +78,6 @@ public class AddBasketValidator : IPipelineBehavior<AddBasketCommand, Result<Bas
         return await next(message, cancellationToken);
     }
 }
-
-public record struct AddBasketCommand(List<AddBasketCommand.AddBasketProduct> Products) : IRequest<Result<BasketAdded, ErrorCodes>>
-{
-    public class AddBasketProduct
-    {
-        public AddBasketProduct(string name, int quantity, decimal costPerItem)
-        {
-            Name = name;
-            Quantity = quantity;
-            CostPerItem = costPerItem;
-        }
-
-        public string Name { get; }
-        public int Quantity { get; }
-        public decimal CostPerItem { get; }
-    }
-}
-
-public record struct BasketAdded(Guid BasketId, decimal Total);
 
 public class AddBasketCommandHandler : IRequestHandler<AddBasketCommand, Result<BasketAdded, ErrorCodes>>
 {
@@ -152,3 +140,26 @@ public class BasketRepository : IAddBasketRepository
     public async Task<int> SaveChangesAsync(CancellationToken cancellationToken)
         => await _dbContext.SaveChangesAsync(cancellationToken);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

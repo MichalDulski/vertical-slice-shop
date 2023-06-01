@@ -1,7 +1,6 @@
-﻿using Domain;
-using Domain.Entities;
+﻿using Domain.Entities;
 
-namespace Application.Repositories;
+namespace Application.Contracts;
 
 public interface IBasketRepository
 {
