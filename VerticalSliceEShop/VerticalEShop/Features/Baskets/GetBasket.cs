@@ -53,11 +53,10 @@ public class GetBasketQueryHandler : IRequestHandler<GetBasketQuery, Result<GetB
         var basket = await _dbContext.Baskets
             .Include(x => x.Products)
             .AsNoTracking()
-            .Where(x => x.Id == basketId)
             .Select(x => new GetBasket(x.Id, 
                 x.Products.Select(y => new GetBasket.Product(y.Id, y.Name, y.Quantity, y.CostPerItem)),
                 x.Total))
-            .FirstOrDefaultAsync(cancellationToken);
+            .FirstOrDefaultAsync(x => x.Id == basketId, cancellationToken);
 
         if (basket == default)
             return new(ErrorCodes.NotFound);
